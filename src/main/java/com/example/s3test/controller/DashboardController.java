@@ -1,5 +1,7 @@
 package com.example.s3test.controller;
+import com.amazonaws.services.codecommit.model.FileMetadata;
 import com.amazonaws.services.s3.model.S3Object;
+import com.example.s3test.model.FileMeta;
 import com.example.s3test.service.MetadataService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -22,7 +25,7 @@ public class DashboardController {
     @GetMapping("dashboard")
     public String dashboard(Model model) {
 
-        var files = metadataService.list();
+        List<FileMeta> files = metadataService.list();
         model.addAttribute("files", files);
         return "dashboard";
     }
@@ -41,7 +44,7 @@ public class DashboardController {
 
         S3Object s3Object = metadataService.download(id);
         String contentType = s3Object.getObjectMetadata().getContentType();
-        var bytes = s3Object.getObjectContent().readAllBytes();
+        byte[] bytes = s3Object.getObjectContent().readAllBytes();
 
         HttpHeaders header = new HttpHeaders();
         header.setContentType(MediaType.valueOf(contentType));
