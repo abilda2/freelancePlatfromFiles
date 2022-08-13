@@ -53,8 +53,8 @@ public class DashboardController {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(MediaType.valueOf(contentType));
         header.setContentLength(bytes.length);
-        ContentDisposition tupe = ContentDisposition.builder("attachment").filename("rulan rocks :D").build();
-        header.setContentDisposition(tupe);
+        ContentDisposition type = ContentDisposition.builder("attachment").filename(s3Object.getKey()).build();
+        header.setContentDisposition(type);
 
         return new HttpEntity<byte[]>(bytes, header);
     }
