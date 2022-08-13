@@ -1,6 +1,7 @@
 package com.example.s3test.controller;
 import com.amazonaws.services.codecommit.model.FileMetadata;
 import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.util.IOUtils;
 import com.example.s3test.model.FileMeta;
 import com.example.s3test.service.MetadataService;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -44,7 +46,8 @@ public class DashboardController {
 
         S3Object s3Object = metadataService.download(id);
         String contentType = s3Object.getObjectMetadata().getContentType();
-        byte[] bytes = s3Object.getObjectContent().readAllBytes();
+
+        byte[] bytes = IOUtils.toByteArray(s3Object.getObjectContent());
 
         HttpHeaders header = new HttpHeaders();
         header.setContentType(MediaType.valueOf(contentType));
