@@ -5,6 +5,7 @@ import com.amazonaws.util.IOUtils;
 import com.example.s3test.model.FileMeta;
 import com.example.s3test.service.MetadataService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -52,6 +53,8 @@ public class DashboardController {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(MediaType.valueOf(contentType));
         header.setContentLength(bytes.length);
+        ContentDisposition tupe = ContentDisposition.builder("attachment").filename("rulan rocks :D").build();
+        header.setContentDisposition(tupe);
 
         return new HttpEntity<byte[]>(bytes, header);
     }
